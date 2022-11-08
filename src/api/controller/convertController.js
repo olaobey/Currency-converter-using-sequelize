@@ -1,9 +1,9 @@
 require('isomorphic-fetch');
-const { getYear, isAfter } = require('date-fns');
-const ExchangeRatesError = require('./exchange-rates-error');
-const QueryStringBuilder = require('./query-string-builder');
-const currencies = require('./currencies');
-const utils = require('./utils');
+const { getYear, isAfter } = require("date-fns");
+const ExchangeRatesError = require("./exchange-rates-error");
+const QueryStringBuilder = require("./query-string-builder");
+const currencies = require("./currencies");
+const utils = require("./utils");
 const API_BASE_URL = 'https://api.exchangeratesapi.io';
 
 class ExchangeRates {
@@ -141,13 +141,10 @@ class ExchangeRates {
         });
     }
 }
-const convert = async (req, res) => {
-const convert = (amount, fromCurrency, toCurrency, date = 'latest') = req.body
-try {
-    const money = await money.convert({ amount, fromCurrency, toCurrency, date = 'latest' });
 
+const convert = (amount, fromCurrency, toCurrency, date = 'latest') => {
     if (typeof amount !== 'number')
-        res.status()('The \'amount\' parameter has to be a number');
+        throw new TypeError('The \'amount\' parameter has to be a number');
     if (Array.isArray(toCurrency))
         throw new TypeError('Cannot convert to multiple currencies at the same time');
     let instance = new ExchangeRates();
@@ -158,6 +155,5 @@ try {
     }
     return instance.base(fromCurrency).symbols(toCurrency).fetch().then(rate => rate * amount);
 };
-}
 const exchangeRates = () => new ExchangeRates();
 module.exports = { exchangeRates, currencies, convert };
